@@ -6,7 +6,6 @@ import axios from 'axios';
 export default function Dashboard() {
     const [songs, setSongs] = useState([]);
 
-    // Fetch songs from the API when the component mounts
     useEffect(() => {
         fetchSongs();
     }, []);

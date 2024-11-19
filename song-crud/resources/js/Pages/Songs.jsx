@@ -1,6 +1,6 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head } from '@inertiajs/react';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 export default function Songs() {
@@ -10,6 +10,20 @@ export default function Songs() {
         year_release: '',
         genre: ''
     });
+    const [songs, setSongs] = useState([]);
+
+    useEffect(() => {
+        fetchSongs();
+    }, []);
+
+    const fetchSongs = async () => {
+        try {
+            const response = await axios.get('/api/songs');
+            setSongs(response.data);
+        } catch (error) {
+            console.error("Error fetching songs:", error);
+        }
+    };
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -19,16 +33,15 @@ export default function Songs() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            // Replace '/api/songs' with the actual route where you handle the POST request
             await axios.post('/api/songs', formData);
             alert('Song added successfully!');
-            // Clear form fields after successful submission
             setFormData({
                 title: '',
                 singer: '',
                 year_release: '',
                 genre: ''
             });
+            fetchSongs(); // Re-fetch songs after adding
         } catch (error) {
             console.error("Error adding song:", error);
         }
@@ -100,6 +113,18 @@ export default function Songs() {
                                     </button>
                                 </div>
                             </form>
+
+                            {/* Display the list of songs */}
+                            <div className="mt-8">
+                                <h3 className="text-lg font-semibold mb-4">Song List</h3>
+                                <ul>
+                                    {songs.map((song) => (
+                                        <li key={song.id} className="py-2">
+                                            <strong>{song.title}</strong> by {song.singer} ({song.year_release}) - {song.genre}
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
                         </div>
                     </div>
                 </div>
