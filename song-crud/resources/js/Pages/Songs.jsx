@@ -1,7 +1,7 @@
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head } from '@inertiajs/react';
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
+import { Head } from '@inertiajs/react';
 
 export default function Songs() {
     const [formData, setFormData] = useState({
@@ -32,11 +32,12 @@ export default function Songs() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log("Submitting song data:", formData); // Debug message
+        console.log("Add Song button clicked"); // Confirm button click
     
         try {
+            console.log("Attempting to send request..."); // Before Axios request
             const response = await axios.post('/api/songs', formData);
-            console.log("Response:", response); // Log response to see if data was saved
+            console.log("Response received:", response); // After Axios request
             alert('Song added successfully!');
             setFormData({
                 title: '',
@@ -46,9 +47,10 @@ export default function Songs() {
             });
             fetchSongs(); // Re-fetch songs after adding
         } catch (error) {
-            console.error("Error adding song:", error); // Log error if request fails
+            console.error("Error adding song:", error); // If request fails
         }
     };
+    
     
 
     return (
