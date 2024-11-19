@@ -32,8 +32,11 @@ export default function Songs() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        console.log("Submitting song data:", formData); // Debug message
+    
         try {
-            await axios.post('/api/songs', formData);
+            const response = await axios.post('/api/songs', formData);
+            console.log("Response:", response); // Log response to see if data was saved
             alert('Song added successfully!');
             setFormData({
                 title: '',
@@ -43,9 +46,10 @@ export default function Songs() {
             });
             fetchSongs(); // Re-fetch songs after adding
         } catch (error) {
-            console.error("Error adding song:", error);
+            console.error("Error adding song:", error); // Log error if request fails
         }
     };
+    
 
     return (
         <AuthenticatedLayout

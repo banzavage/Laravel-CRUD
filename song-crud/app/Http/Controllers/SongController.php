@@ -7,27 +7,15 @@ use App\Models\Song;
 
 class SongController extends Controller
 {
-    /**
-     * Display a listing of all songs.
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
+    // Fetch all songs
     public function index()
     {
-        // Fetch all songs from the database
-        $songs = Song::all();
-        return response()->json($songs);
+        return response()->json(Song::all());
     }
 
-    /**
-     * Store a newly created song in the database.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\JsonResponse
-     */
+    // Store a new song
     public function store(Request $request)
     {
-        // Validate the incoming request data
         $request->validate([
             'title' => 'required|string|max:255',
             'singer' => 'required|string|max:255',
@@ -35,15 +23,33 @@ class SongController extends Controller
             'genre' => 'required|string|max:255',
         ]);
 
-        // Create a new song record in the database
-        Song::create([
-            'title' => $request->title,
-            'singer' => $request->singer,
-            'year_release' => $request->year_release,
-            'genre' => $request->genre,
+        $song = Song::create($request->all());
+
+        return response()->json(['message' => 'Song added successfully', 'song' => $song], 201);
+    }
+
+    // Update an existing song
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'title' => 'required|string|max:50',
+            'singer' => 'required|string|max:50',
+            'year_release' => 'required|integer',
+            'genre' => 'required|string|max:50',
         ]);
 
-        // Return a success message
-        return response()->json(['message' => 'Song added successfully'], 201);
+        $song = Song::findOrFail($id);
+        $song->update($request->all());
+
+        return response()->json(['message' => 'Song updated successfully', 'song' => $song], 200);
+    }
+
+    // Delete a song
+    public function destroy($id)
+    {
+        $song = Song::findOrFail($id);
+        $song->delete();
+
+        return response()->json(['message' => 'Song deleted successfully'], 200);
     }
 }
