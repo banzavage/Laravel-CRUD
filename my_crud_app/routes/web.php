@@ -25,6 +25,10 @@ Route::middleware('auth')->group(function () {
     // Task CRUD routes, protected by 'auth'
     Route::resource('tasks', TaskController::class);
 });
+Route::get('/check-tasks', function () {
+    $tasks = Task::all();  // Get all tasks
+    return response()->json($tasks);  // Return tasks as JSON
+});
 
 // Authentication routes (login, register, etc.)
 require __DIR__.'/auth.php';
