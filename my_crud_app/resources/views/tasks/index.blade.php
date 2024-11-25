@@ -1,42 +1,45 @@
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+
 @extends('layouts.app')
 
 @section('content')
 <div class="container">
-    <h1>Task List</h1>
-
+    <!-- Success Message -->
     @if(session('success'))
         <div class="alert alert-success">{{ session('success') }}</div>
     @endif
 
-    <a href="{{ route('tasks.create') }}" class="btn btn-primary mb-3">Add New Task</a>
+    <!-- Add New Task Button -->
+    <div class="mb-3 text-right">
+        <a href="{{ route('tasks.create') }}" class="btn btn-primary">Add New Task</a>
+    </div>
 
-    <table class="table table-bordered">
-        <thead>
-            <tr>
-                <th>Title</th>
-                <th>Description</th>
-                <th>Completed</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach($tasks as $task)
+    <!-- Task Table -->
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover">
+            <thead class="thead-dark text-center">
                 <tr>
-                    <td>{{ $task->title }}</td>
-                    <td>{{ $task->description }}</td>
-                    <td>{{ $task->completed ? 'Yes' : 'No' }}</td>
-                    <td>
-                        <a href="{{ route('tasks.show', $task) }}" class="btn btn-info">View</a>
-                        <a href="{{ route('tasks.edit', $task) }}" class="btn btn-warning">Edit</a>
-                        <form action="{{ route('tasks.destroy', $task) }}" method="POST" style="display:inline-block;">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure?')">Delete</button>
-                        </form>
-                    </td>
+                    <th>Task</th>
+                    <th>Description</th>
+                    <th>Completed</th>
                 </tr>
-            @endforeach
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                @foreach($tasks as $task)
+                    <tr class="text-center align-middle">
+                        <td class="align-middle">{{ $task->title }}</td>
+                        <td class="align-middle">{{ $task->description }}</td>
+                        <td class="align-middle">
+                            <span class="badge {{ $task->completed ? 'badge-success' : 'badge-danger' }}">
+                                {{ $task->completed ? 'Yes' : 'No' }}
+                            </span>
+                        </td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+    </div>
 </div>
 @endsection

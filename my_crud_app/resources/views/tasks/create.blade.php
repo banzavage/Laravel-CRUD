@@ -1,8 +1,11 @@
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+
 @extends('layouts.app')
 
 @section('content')
 <div class="container">
-    <h1>Create New Task</h1>
 
     @if ($errors->any())
         <div class="alert alert-danger">
@@ -17,7 +20,7 @@
     <form action="{{ route('tasks.store') }}" method="POST">
         @csrf
         <div class="mb-3">
-            <label for="title" class="form-label">Task Title</label>
+            <label for="title" class="form-label">Task</label>
             <input type="text" name="title" id="title" class="form-control" required>
         </div>
 
